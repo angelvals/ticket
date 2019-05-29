@@ -153,8 +153,8 @@ $("#userForm").submit(function() {
         $("#msg").val(''); // reset field after successful submission
         $("#id_observacion").val(''); // reset field after successful submission
         $("#id_peligro").val(''); // reset field after successful submission
-        $('.selectpicker').selectpicker('deselectAll');
-        $('.selectpicker').selectpicker('render');
+        $('#id_observacion, #id_peligro').selectpicker('deselectAll');
+        $('#id_observacion, #id_peligro').selectpicker('render');
         getData();
     })
     .fail(function(response) {
