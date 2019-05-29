@@ -21,6 +21,7 @@ $(document).ready(function(){
                     $(`<option value="${value.id_peligro}">`).html(value.descripcion)
                 );
             });
+            $('#id_observacion, #id_peligro, #update_peligro').selectpicker('render');
             getData();
         }
     })

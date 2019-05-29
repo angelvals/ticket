@@ -48,8 +48,8 @@ app.post('/ticket', (req, res) => {
         });
     });
 });
-app.get('/ticket/:page?/:limit?', (req, res) => {
-    getData(req.params.page, req.params.limit).then(function(rows) { 
+app.get('/ticket', (req, res) => {
+    getData().then(function(rows) { 
         res.send({
             success: true,
             message: null,
@@ -139,7 +139,7 @@ app.use((err, req, res, next) => {
 
 
 //Nested data
-async function getData(page, limit) {
+async function getData() {
     var sql = `
         select 
             id, name, email, msg, tk.id_observacion, tbl_ob.descripcion as "ob_descripcion"
