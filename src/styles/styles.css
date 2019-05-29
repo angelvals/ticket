@@ -1,0 +1,16 @@
+.section {
+    height: 100vh;
+    min-height: 500px;
+}
+.full-section {
+    height: 100vh;
+    min-height: 500px;
+    background-image: url('/img/clogo.png');
+    background-size: 50%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: dimgrey;
+}
+textarea.noresize {
+    resize: none;
+}
