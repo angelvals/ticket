@@ -4,7 +4,9 @@ const port = process.env.PORT || 3000;
 const request = require('request');
 const bodyParser  = require('body-parser');
 const server = require('./src/config/server');
+const cors = require('cors');
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use('/img', express.static(__dirname + '/src/img'));
 app.use('/', express.static(__dirname + '/src/views'));
