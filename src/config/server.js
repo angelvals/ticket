@@ -7,10 +7,10 @@ const mysql = require('mysql');
 const port = 3306;
 
 const server = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "root",
-  database: 'test',
+  host: "remotemysql.com",
+  user: "beiwdYNJAs",
+  password: "ntXfeiAPgs",
+  database: 'beiwdYNJAs',
   port: port,
   multipleStatements: true
 });
