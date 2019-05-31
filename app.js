@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
-//const request = require('request');
+const request = require('request');
 const bodyParser  = require('body-parser');
 const server = require('./src/config/server');
 
@@ -121,6 +121,38 @@ app.get('/ticket/combolist', (req, res) => {
         });
     });
 });
+
+//Map routes
+app.get('/map/buses/:route?', (req, res) => {
+    const base = "http://developer.itsmarta.com/BRDRestService/BRDRestService.svc/";
+    let query = "GetAllBus";
+
+    request(base+query, function (error, response, body) {
+        body = JSON.parse(body);
+        if(req.params.route){
+            body = body.filter(bus => { return bus['ROUTE'] == req.params.route });
+            console.log(req.params.route)
+        }
+        res.send(body);
+    });
+})
+app.get('/map/train', (req, res) => {
+    if(!process.env.MARTA_API_KEY) throw 'MARTA API key needed!!';
+    const base = `http://developer.itsmarta.com/RealtimeTrain/RestServiceNextTrain/GetRealtimeArrivals?apikey=${process.env.MARTA_API_KEY}`;
+
+    request(base, function (err, response, body) {
+        if(err) throw err;
+        if(response.statusCode == 401 || response.statusCode == 403) {
+            res.status(response.statusCode).send({
+                success: false,
+                message: `Your API key seems to be invalid. Try visiting ${base}`,
+                result: err
+            });
+        } else {
+            res.send(JSON.parse(body));
+        }
+    });
+})
 
 //404 handler
 app.use((req, res, next) => {
