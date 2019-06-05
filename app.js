@@ -14,6 +14,7 @@ app.use('/scripts', express.static(__dirname + '/src/scripts'));
 app.use('/styles', express.static(__dirname + '/src/styles'));
 app.listen(port);
 console.log(`
+this is to dev!!
 ────────────────▄────────────────
 ──────────────▄▀░▀▄──────────────
 ────────────▄▀░░░░░▀▄────────────
