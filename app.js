@@ -10,7 +10,6 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use('/img', express.static(__dirname + '/src/img'));
 app.use('/', express.static(__dirname + '/src/views'));
-app.use('/portfolio', express.static(__dirname + '/src/views/portfolio'));
 app.use('/scripts', express.static(__dirname + '/src/scripts'));
 app.use('/styles', express.static(__dirname + '/src/styles'));
 app.listen(port);
