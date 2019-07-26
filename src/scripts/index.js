@@ -1,60 +1,47 @@
-let observaciones = [];
-let peligros = [];
-
 $(document).ready(function(){
+    fillCombo();
+    getData();
+});
+
+function fillCombo(){
     $.ajax({
         type: "GET",
-        url: "/ticket/combolist",
+        url: "/category",
         dataType: "json"
     })
     .done(function(response) {
         if(response.success){
-            observaciones = response.result.tbl_observacion; 
-            response.result.tbl_observacion.map((value) => {
-                $('#id_observacion, #update_observacion').append(
-                    $(`<option value="${value.id_observacion}">`).html(value.descripcion)
+            $('#id_cat, #update_cat').html('');
+            response.result.map((value) => {
+                $('#id_cat, #update_cat').append(
+                    $(`<option value="${value.id}">`).html(value.nombre)
                 );
             });
-            peligros = response.result.tbl_peligro;
-            response.result.tbl_peligro.map((value) => {
-                $('#id_peligro, #update_peligro').append(
-                    $(`<option value="${value.id_peligro}">`).html(value.descripcion)
-                );
-            });
-            $('#id_observacion, #id_peligro, #update_peligro').selectpicker('render');
-            getData();
         }
     })
     .fail(function(response) {
         alert('Server error.');
     });
-});
+}
 
 function getData(){
     $('#dataBody').html('');
     $.ajax({
         type: "GET",
-        url: "/ticket",
+        url: "/products",
         dataType: "json"
     })
     .done(function(response) {
         response.result.map((value) => {
-            let peligro_v = "";
-            value.id_peligro.forEach((value) => {
-                peligro_v += (peligros.find(t => t.id_peligro == value.id_peligro).descripcion)+", ";
-            });
-            peligro_v = peligro_v.substring(0, peligro_v.length - 2);
             let $tr = $('<tr>');
             $tr.append(
                 $('<td>').html(value.id),
-                $('<td>').html(value.name),
-                $('<td>').html(value.email),
-                $('<td>').html(value.msg),
-                $('<td>').html(value.ob_descripcion),
-                $('<td>').html(peligro_v),
+                $('<td>').html(value.nombre),
+                $('<td>').html(value.descripcion),
+                $('<td>').html(value.cat_lbl),
                 $('<td>').html(
-                    `<button class="btn btn-warning" onclick='ticketModal(${JSON.stringify(value)})'>Update</button>
-                    <button class="btn btn-danger" onclick="deleteTicket(${value.id})">Delete</button>`
+                    `<button class="btn btn-warning" onclick='productModal(${JSON.stringify(value)})'>Actualizar</button>
+                    <button class="btn btn-danger" onclick="deleteProduct(${value.id})">Borrar</button>`
                 ),
             );
             $('#dataBody').append($tr);
@@ -65,25 +52,16 @@ function getData(){
     });
 }
 
-function clearDB() {
-    $('#dataBody').html('');
+function productModal(data){
+    $("#productoId").html(data.id);
+    oFormObject = document.forms['productUForm'];
+    oFormObject.elements[0].value = data.nombre
+    oFormObject.elements[1].value = data.descripcion
+    oFormObject.elements[2].value = data.category_id
+    $('#productModal').modal('show');
 }
 
-function ticketModal(data){
-    $('#update_peligro').selectpicker('deselectAll');
-    $('#reportId').html(data.id);
-    $('#name-text').val(data.name);
-    $('#email-text').val(data.email);
-    $('#issue-text').html(data.msg);
-    $("#update_observacion").val(data.id_observacion);
-    let peligro_v = [];
-    data.id_peligro.forEach(value => peligro_v.push(value.id_peligro));
-    $("#update_peligro").selectpicker('val', peligro_v);
-    $('#update_peligro').selectpicker('render');
-    $('#ticketModal').modal('show');
-}
-
-$('#ticketModal').on('hidden.bs.modal', function (e) {
+$('#productModal').on('hidden.bs.modal', function (e) {
     // Clear ticket modal data...
     $('#reportId').html('');
     $('#name-text').val('');
@@ -93,34 +71,36 @@ $('#ticketModal').on('hidden.bs.modal', function (e) {
     $("#update_peligro").val(''); // reset field after successful submission
 })
 
-function updateTicket(){
+function updateTicket(data) {
+    const id = $("#productoId").html();
+    oFormObject = document.forms['productUForm'];
     var data = getBody({
-        name: $('#name-text').val(),
-        email: $('#email-text').val(),
-        msg: $('#issue-text').val(),
-        id_observacion: $("#update_observacion").val(),
-        id_peligro: $("#update_peligro").val()
+        name: oFormObject.elements[0].value,
+        msg: oFormObject.elements[1].value,
+        id_cat: oFormObject.elements[2].value
     });
     $.ajax({
         type: "PUT",
-        url: `/ticket/${$('#reportId').html()}`,
+        url: "/products/"+id,
         contentType: 'application/json',
         data: data
     })
     .done(function(response) {
-        $('#ticketModal').modal('hide');
-        //alert('Report updated!'); // show success message
+        oFormObject.elements[0].value = "";
+        oFormObject.elements[1].value = "";
+        oFormObject.elements[2].value = "";
+        $('#productModal').modal('hide');
         getData();
     })
     .fail(function(response) {
-        alert('Error updating report.');
+        alert('Error saving data.');
     });
 }
 
-function deleteTicket(id){
+function deleteProduct(id){
     $.ajax({
         type: "DELETE",
-        url: `/ticket/${id}`,
+        url: `/products/${id}`,
         contentType: 'application/json',
     })
     .done(function(response) {
@@ -131,34 +111,50 @@ function deleteTicket(id){
     });
 }
 
-$("#userForm").submit(function() {
+$("#productForm").submit(function(event) {
     var data = getBody({
-        name: $("#name").val(),
-        email: $("#email").val(),
-        msg: $("#msg").val(),
-        id_observacion: $("#id_observacion").val(),
-        id_peligro: $("#id_peligro").val()
+        name: event.currentTarget[0].value,
+        msg: event.currentTarget[1].value,
+        id_cat: event.currentTarget[2].value
     });
-
     $.ajax({
         type: "POST",
-        url: "/ticket",
+        url: "/products",
         contentType: 'application/json',
         data: data
     })
     .done(function(response) {
-        alert('Your message has been sent. Thank you!'); // show success message
-        $("#name").val(''); // reset field after successful submission
-        $("#email").val(''); // reset field after successful submission
-        $("#msg").val(''); // reset field after successful submission
-        $("#id_observacion").val(''); // reset field after successful submission
-        $("#id_peligro").val(''); // reset field after successful submission
-        $('#id_observacion, #id_peligro').selectpicker('deselectAll');
-        $('#id_observacion, #id_peligro').selectpicker('render');
+        alert('Producto almacenado');
+        event.currentTarget[0].value = "";
+        event.currentTarget[1].value = "";
+        event.currentTarget[2].value = "";
         getData();
     })
     .fail(function(response) {
-        alert('Error sending message.');
+        alert('Error saving data.');
+    });
+    return false; // prevent page refresh
+});
+
+$("#categoryForm").submit(function(event) {
+    var data = getBody({
+        name: event.currentTarget[0].value,
+        msg: event.currentTarget[1].value
+    });
+    $.ajax({
+        type: "POST",
+        url: "/category",
+        contentType: 'application/json',
+        data: data
+    })
+    .done(function(response) {
+        alert('Categoria almacenada');
+        event.currentTarget[0].value = "";
+        event.currentTarget[1].value = "";
+        fillCombo();
+    })
+    .fail(function(response) {
+        alert('Error saving data.');
     });
     return false; // prevent page refresh
 });

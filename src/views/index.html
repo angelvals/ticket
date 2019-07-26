@@ -3,11 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Cargill Ticket Service</title>
+    <title>Test</title>
     <link href="styles/styles.css" rel="stylesheet" type="text/css">
     
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -29,123 +28,103 @@
                 <span class="sr-only">(current)</span>
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#ticket">Ticket</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#report">Report</a>
-            </li>
           </ul>
         </div>
       </div>
     </nav>
     
     <!-- Full Page Image Header with Vertically Centered Content -->
-    <div data-spy="scroll" data-target="#navbar" data-offset="0">
-      <header class="full-section">
-        <div class="background-logo"></div>
-        <!--div class="container h-100">
-          <div class="row h-100 align-items-center">
-            <div class="col-12 text-center">
-              <h1 class="font-weight-light">Test database</h1>
-              <p class="lead">Landing page for a database testing</p>
-            </div>
+    <section class="py-5 section" style="margin-top:30px">
+      <div class="container">
+        <form id="productForm">
+          <div class="form-group">
+            <h2>Crear producto:</h2>
           </div>
-        </div-->
-      </header>
-
-      <section id="ticket" class="py-5 section">
-        <div class="container">
-          <form id="userForm">
-            <div class="form-group">
-              <h2>Create report:</h2>
-            </div>
-            <div class="form-group">
-              <label for="name">Name</label>
-              <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
-            </div>
-            <div class="form-group">
-              <label for="email">Email address</label>
-              <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" required>
-              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-            </div>
-            <div class="form-group">
-              <label for="msg">Issue</label>
-              <textarea id="msg" rows="3" class="form-control noresize" name="msg" required></textarea>
-            </div>
-            <div class="form-group">
-              <label for="id_observacion">Tipo de Observacion</label>
-              <select id="id_observacion" class="form-control" name="id_observacion" required title="Selecciona uno..."></select>
-            </div>
-            <div class="form-group">
-              <label for="id_peligro">Peligro Identificado</label>
-              <select id="id_peligro" class="form-control" name="id_peligro" required multiple data-max-options="2" title="Selecciona uno, maximo 2..."></select>
-            </div>
-            <button type="submit" class="btn btn-primary">Send Report</button>
-          </form>
-        </div>
-      </section>
-
-      <section id="report" class="py-5 section" style="background-color:dimgrey;color: white;">
-        <div class="container" style="background-color: white; padding: 15px; border-radius: 25px;">
-          <h2 style="color: black; padding: 10px;">Data saved:</h2>
-          <div class="table-responsive">
-            <table class="table table-bordered">
-              <thead>
-                <tr>
-                  <th scope="col">ID</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Email</th>
-                  <th scope="col">Message</th>
-                  <th scope="col">Observaciones</th>
-                  <th scope="col">Peligros</th>
-                  <th scope="col">Actions</th>
-                </tr>
-              </thead>
-              <tbody id="dataBody">
-                <!--All the data saved goes in here-->
-              </tbody>
-            </table>
+          <div class="form-group">
+            <label for="name">Nombre</label>
+            <input type="text" class="form-control" placeholder="Ingresa nombre" required>
           </div>
-          <button class="btn btn-primary" onclick="getData()">Get data</button>
-          <button class="btn btn-warning" onclick="clearDB()">Clear table</button>
+          <div class="form-group">
+            <label for="msg">Descripcion</label>
+            <textarea rows="3" class="form-control noresize" name="msg" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="id_cat">Categoria</label>
+            <select class="form-control" id="id_cat" required name="id_cat" title="Selecciona una..."></select>
+          </div>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="py-5 section" style="background-color:dimgrey;color: white;">
+      <div class="container" style="background-color: white; padding: 15px; border-radius: 25px;">
+        <h2 style="color: black; padding: 10px;">Productos:</h2>
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripcion</th>
+                <th scope="col">Categoria</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="dataBody">
+              <!--All the data saved goes in here-->
+            </tbody>
+          </table>
         </div>
-      </section>
-    </div>
+        <button class="btn btn-primary" onclick="getData()">Actualizar</button>
+      </div>
+    </section>
+
+    <section class="py-5 section" style="margin-top:30px">
+      <div class="container">
+        <form id="categoryForm">
+          <div class="form-group">
+            <h2>Crear categoria:</h2>
+          </div>
+          <div class="form-group">
+            <label for="name">Nombre</label>
+            <input type="text" class="form-control" placeholder="Ingresa tu nombre" required>
+          </div>
+          <div class="form-group">
+            <label for="msg">Descripcion</label>
+            <textarea rows="3" class="form-control noresize" name="msg" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+      </div>
+    </section>
 
     <!--Modals-->
-    <div class="modal fade" id="ticketModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Update report #<span id="reportId"></span></h5>
+            <h5 class="modal-title" id="exampleModalLabel">Actualiza producto #<span id="productoId"></span></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            <form>
+            <form id="productUForm">
               <div class="form-group">
-                <label for="name-text" class="col-form-label">Name:</label>
-                <input type="text" class="form-control" id="name-text">
+                <h2>Actualizar producto:</h2>
               </div>
               <div class="form-group">
-                <label for="email-text" class="col-form-label">Email address:</label>
-                <input type="email" class="form-control" id="email-text">
+                <label for="name">Nombre</label>
+                <input type="text" class="form-control" placeholder="Ingresa nombre" required>
               </div>
               <div class="form-group">
-                <label for="issue-text" class="col-form-label">Issue:</label>
-                <textarea class="form-control noresize" id="issue-text"></textarea>
+                <label for="msg">Descripcion</label>
+                <textarea rows="3" class="form-control noresize" name="msg" required></textarea>
               </div>
               <div class="form-group">
-                <label for="update_observacion">Tipo de Observacion</label>
-                <select id="update_observacion" class="form-control" name="update_observacion" required title="Selecciona uno...">
-                  <option value="" selected disabled>Selecciona uno...</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="update_peligro">Peligro Identificado</label>
-                <select id="update_peligro" class="form-control" name="update_peligro" required multiple data-max-options="2" title="Selecciona uno, maximo 2..."></select>
+                <label for="id_cat">Categoria</label>
+                <select class="form-control" id="update_cat" required name="id_cat" title="Selecciona una..."></select>
               </div>
             </form>
           </div>
