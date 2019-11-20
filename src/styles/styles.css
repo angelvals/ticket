@@ -14,3 +14,25 @@
 textarea.noresize {
     resize: none;
 }
+
+/*Ejemplo usando id*/
+#seccion1 {
+    margin-top: 60px;
+}
+#contenedorPrincipal {
+    padding: 20px;
+}
+/*Ejemplo usando clases*/
+.texto-centrado {
+    text-align: center;
+}
+/*Ejemplo usando el nombre de la etiqueta*/
+ul {
+    list-style-type: square;
+}
+li {
+    padding: 10px 0px;
+}
+.custom-top-margen {
+    margin-top: 30px;
+}

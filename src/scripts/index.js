@@ -1,35 +1,6 @@
 let observaciones = [];
 let peligros = [];
 
-$(document).ready(function(){
-    $.ajax({
-        type: "GET",
-        url: "/ticket/combolist",
-        dataType: "json"
-    })
-    .done(function(response) {
-        if(response.success){
-            observaciones = response.result.tbl_observacion; 
-            response.result.tbl_observacion.map((value) => {
-                $('#id_observacion, #update_observacion').append(
-                    $(`<option value="${value.id_observacion}">`).html(value.descripcion)
-                );
-            });
-            peligros = response.result.tbl_peligro;
-            response.result.tbl_peligro.map((value) => {
-                $('#id_peligro, #update_peligro').append(
-                    $(`<option value="${value.id_peligro}">`).html(value.descripcion)
-                );
-            });
-            $('#id_observacion, #id_peligro, #update_peligro').selectpicker('render');
-            getData();
-        }
-    })
-    .fail(function(response) {
-        alert('Server error.');
-    });
-});
-
 function getData(){
     $('#dataBody').html('');
     $.ajax({
